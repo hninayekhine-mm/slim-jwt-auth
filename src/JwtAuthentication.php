@@ -50,7 +50,8 @@ class JwtAuthentication
         "path" => null,
         "passthrough" => null,
         "callback" => null,
-        "error" => null
+        "error" => null,
+        "jwksEndpoint" => null
     ];
 
     /**
@@ -249,7 +250,8 @@ class JwtAuthentication
             return JWT::decode(
                 $token,
                 $this->options["secret"],
-                (array) $this->options["algorithm"]
+                (array) $this->options["algorithm"],
+                $this->options["jwksEndpoint"]
             );
         } catch (\Exception $exception) {
             $this->message = $exception->getMessage();
@@ -664,4 +666,26 @@ class JwtAuthentication
         $this->options["algorithm"] = $algorithm;
         return $this;
     }
+
+    /**
+     * Get the jwks endpoint
+     *
+     * @return callable
+     */
+     public function getJwksEndpoint()
+     {
+         return $this->options["jwksEndpoint"];
+     }
+ 
+     /**
+      * Set the jwks endpoint
+      *
+      * @param callable $jwksEndpoint
+      * @return self
+      */
+     public function setJwksEndpoint($jwksEndpoint)
+     {
+         $this->options["jwksEndpoint"] = $jwksEndpoint;
+         return $this;
+     }
 }
